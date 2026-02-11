@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YXJ资源</title>
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #111;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  overflow-x: hidden;
+  transition: background 0.5s;
+}
+
+/* ================== 高级液态玻璃卡片 ================== */
+.glass {
+  background: rgba(255,255,255,0.18);
+  border-radius: 25px;
+  padding: 25px 30px;
+  margin: 15px 0;
+  width: 90%;
+  max-width: 650px;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 
+    0 12px 36px rgba(0,0,0,0.35),
+    inset 0 4px 12px rgba(255,255,255,0.2);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s;
+}
+
+.glass:hover {
+  background: rgba(255,255,255,0.28);
+  transform: translateY(-4px);
+}
+
+h1, h3 {
+  margin: 0 0 15px 0;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  position: relative;
+  padding: 15px 20px;
+  margin: 8px 0;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.07);
+  cursor: pointer;
+  transition: all 0.25s;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  animation: pulse 3s infinite alternate; /* 呼吸光环 */
+}
+
+li:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 6px 16px rgba(0,0,0,0.25);
+}
+
+/* ================== 设置按钮 ================== */
+#settingsBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 2px solid rgba(255,255,255,0.35);
+  box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 12px 36px rgba(0,0,0,0.35);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  color: #fff;
+  transition: all 0.3s;
+  animation: float 3s ease-in-out infinite, pulse 2.5s infinite;
+  overflow: hidden;
+}
+
+#settingsBtn:hover { transform: scale(1.2); }
+#settingsBtn:active { transform: scale(0.95); }
+
+/* 浮动 */
+@keyframes float {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.03); }
+}
+
+/* 呼吸光环 */
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 12px 36px rgba(0,0,0,0.35); }
+  50% { box-shadow: 0 0 50px rgba(255,255,255,0.8), 0 12px 36px rgba(0,0,0,0.35); }
+  100% { box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 12px 36px rgba(0,0,0,0.35); }
+}
+
+/* 水波涟漪 */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: scale(0);
+  animation: rippleAnim 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes rippleAnim {
+  to { transform: scale(5); opacity: 0; }
+}
+
+/* 设置弹窗 */
+#settingsPanel {
+  position: fixed;
+  bottom: 110px;
+  right: 30px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 25px;
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  border: 2px solid rgba(255,255,255,0.35);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35), inset 0 4px 12px rgba(255,255,255,0.2);
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.3s ease forwards;
+}
+
+#settingsPanel button {
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 15px;
+  border: none;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  animation: pulse 3s infinite alternate;
+}
+
+#settingsPanel button:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+@keyframes fadeIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+#bgInput { display: none; }
+</style>
+<body>
+
+<div class="glass">
+  <h1>📢 歪比巴卜</h1>
+  <p>本站资源纯网络收集(@yxj88nb)</p>
+</div>
+
+<div class="glass">
+  <h3>📁 资源目录(YXJNB)</h3>
+  <ul id="folderList">
+    <li data-url="https://www.123865.com/s/lod3vd-6QKqd">①-工具模块资源</li>
+    <li data-url="https://521o.cop357.com/ds/?key=1770796619">②神秘卡网</li>
+    <li data-url="https://www.123912.com/s/Iwbijv-2gDkh">🔞未满18岁禁止入内🔞</li>
+  </ul>
+</div>
+
+<div id="settingsBtn">⚙️</div>
+<div id="settingsPanel">
+  <button id="blurBtn">调整液态玻璃模糊</button>
+  <button id="chooseImageBtn">选择背景图片</button>
+</div>
+
+<input type="file" id="bgInput" accept="image/*">
+
+<script>
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const blurBtn = document.getElementById('blurBtn');
+const chooseImageBtn = document.getElementById('chooseImageBtn');
+const bgInput = document.getElementById('bgInput');
+
+// 设置按钮点击涟漪 + 弹出面板
+settingsBtn.addEventListener('click', (e) => {
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const rect = settingsBtn.getBoundingClientRect();
+  ripple.style.width = ripple.style.height = rect.width + 'px';
+  ripple.style.left = '0px';
+  ripple.style.top = '0px';
+  settingsBtn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+  settingsPanel.style.display = settingsPanel.style.display === 'flex' ? 'none' : 'flex';
+});
+
+// 资源目录点击涟漪 + 跳转
+document.querySelectorAll('#folderList li').forEach(li => {
+  li.addEventListener('click', (e) => {
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const rect = li.getBoundingClientRect();
+    ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+    ripple.style.left = e.clientX - rect.left - rect.width/2 + 'px';
+    ripple.style.top = e.clientY - rect.top - rect.height/2 + 'px';
+    li.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+
+    const url = li.getAttribute('data-url');
+    if(url) window.open(url, '_blank');
+  });
+});
+
+// 调节玻璃模糊
+blurBtn.addEventListener('click', () => {
+  const blurValue = prompt("请输入模糊程度 (0-20 px):", "12");
+  if(blurValue !== null){
+    document.querySelectorAll('.glass, #settingsPanel, #folderList li, #settingsPanel button').forEach(g => g.style.backdropFilter = `blur(${blurValue}px)`);
+  }
+});
+
+// 选择背景图片
+chooseImageBtn.addEventListener('click', () => bgInput.click());
+bgInput.addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(file){
+    const url = URL.createObjectURL(file);
+    document.body.style.background = `url('${url}') center/cover no-repeat`;
+  }
+});
+</script>
+</body>
+</html>
