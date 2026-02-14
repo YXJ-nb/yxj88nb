@@ -3,242 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YXJ资源</title>
+<title>YXJ 神秘资源</title>
 <style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #111;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  overflow-x: hidden;
-  transition: background 0.5s;
-}
+:root{--blur:20px;--lightX:50%;--lightY:50%;}
+body{margin:0;font-family:'Inter',sans-serif;overflow-x:hidden;background:#050b18;color:#fff;}
 
-/* ================== 高级液态玻璃卡片 ================== */
-.glass {
-  background: rgba(255,255,255,0.18);
-  border-radius: 25px;
-  padding: 25px 30px;
-  margin: 15px 0;
-  width: 90%;
-  max-width: 650px;
-  color: #fff;
-  border: 2px solid rgba(255,255,255,0.3);
-  box-shadow: 
-    0 12px 36px rgba(0,0,0,0.35),
-    inset 0 4px 12px rgba(255,255,255,0.2);
-  backdrop-filter: blur(12px);
-  transition: all 0.3s;
-}
+/* Loader & 粒子背景 */
+#secure-loader{position:fixed;inset:0;z-index:9999;overflow:hidden;background:radial-gradient(circle at center,#0b1f3a 0%,#03060d 100%);}
+#bgParticles{position:absolute;top:0;left:0;width:100%;height:100%;}
 
-.glass:hover {
-  background: rgba(255,255,255,0.28);
-  transform: translateY(-4px);
-}
+/* HUD & 扫描动画 */
+.hud{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);backdrop-filter:blur(40px);background:rgba(0,120,255,0.08);border:1px solid rgba(0,180,255,0.3);border-radius:24px;padding:60px;text-align:center;box-shadow:0 0 80px rgba(0,180,255,0.3);}
+.ring{width:140px;height:140px;border:2px solid rgba(0,200,255,0.7);border-radius:50%;animation:rotate 4s linear infinite;margin:auto;position:relative;display:flex;justify-content:center;align-items:center;}
+.logo{position:relative;font-size:32px;font-weight:bold;color:#00eaff;z-index:2;}
+.scan-beam{width:140px;height:2px;background:linear-gradient(90deg,transparent,#00eaff,transparent);animation:scan 2.5s infinite;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.status{margin-top:30px;color:#7edbff;font-family:monospace;letter-spacing:1px;}
 
-h1, h3 {
-  margin: 0 0 15px 0;
-  text-align: center;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
-}
+/* Logo 能量光环 */
+.logo-glow{position:absolute;width:60px;height:60px;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 0 20px #00eaff,0 0 60px #00eaff;animation:glowPulse 1.8s infinite alternate;z-index:1;}
+@keyframes glowPulse{0%{box-shadow:0 0 20px #00eaff,0 0 60px #00eaff;}50%{box-shadow:0 0 35px #00eaff,0 0 100px #00eaff;}100%{box-shadow:0 0 20px #00eaff,0 0 60px #00eaff;}}
 
-ul {
-  list-style: none;
-  padding-left: 0;
-}
+@keyframes rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes scan{0%{transform:translate(-50%,-50%) translateY(-70px);}100%{transform:translate(-50%,-50%) translateY(70px);}}
 
-li {
-  position: relative;
-  padding: 15px 20px;
-  margin: 8px 0;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.07);
-  cursor: pointer;
-  transition: all 0.25s;
-  font-size: 18px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  animation: pulse 3s infinite alternate; /* 呼吸光环 */
-}
+/* 主站光线背景 */
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at var(--lightX) var(--lightY),rgba(255,255,255,0.15),transparent 40%);pointer-events:none;z-index:-1;}
 
-li:hover {
-  background: rgba(255,255,255,0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 6px 16px rgba(0,0,0,0.25);
-}
+/* Header */
+header{position:fixed;top:0;left:0;width:100%;height:65px;display:flex;justify-content:space-between;align-items:center;padding:0 20px;backdrop-filter:blur(20px);background:rgba(0,0,0,0.5);border-bottom:1px solid rgba(255,255,255,0.1);z-index:1000;}
 
-/* ================== 设置按钮 ================== */
-#settingsBtn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  border: 2px solid rgba(255,255,255,0.35);
-  box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 12px 36px rgba(0,0,0,0.35);
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  color: #fff;
-  transition: all 0.3s;
-  animation: float 3s ease-in-out infinite, pulse 2.5s infinite;
-  overflow: hidden;
-}
+/* Sections & Layers */
+.section{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:100px 20px 60px;}
+.stack{width:95%;max-width:1000px;transform-style:preserve-3d;transition:0.6s ease;}
+.layer{backdrop-filter:blur(var(--blur));background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:25px;padding:30px;margin:20px 0;box-shadow:0 20px 60px rgba(0,0,0,0.6),inset 0 2px 6px rgba(255,255,255,0.2);transition:1s ease;opacity:0;transform:translateY(60px);}
+.layer.active{opacity:1;transform:translateY(0);}
+h1,h2{margin:0 0 15px;}
+h1{font-size:clamp(28px,6vw,70px);}
+ul{list-style:none;padding:0;}
+li{position:relative;padding:15px;margin:10px 0;border-radius:16px;background:rgba(255,255,255,0.08);cursor:pointer;overflow:hidden;transition:0.3s;}
+li:hover{background:rgba(255,255,255,0.2);}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.35);transform:scale(0);animation:ripple 0.6s linear;}
+@keyframes ripple{to{transform:scale(5);opacity:0;}}
 
-#settingsBtn:hover { transform: scale(1.2); }
-#settingsBtn:active { transform: scale(0.95); }
+/* 设置按钮 */
+#settingsBtn{position:fixed;bottom:20px;right:20px;width:60px;height:60px;border-radius:50%;backdrop-filter:blur(var(--blur));background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);display:flex;justify-content:center;align-items:center;font-size:24px;cursor:pointer;}
+#settingsPanel{position:fixed;bottom:90px;right:20px;display:none;flex-direction:column;backdrop-filter:blur(var(--blur));background:rgba(255,255,255,0.1);padding:15px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+#settingsPanel button{margin:6px 0;padding:10px;border:none;border-radius:12px;background:rgba(255,255,255,0.2);color:white;cursor:pointer;}
+#bgInput{display:none;}
 
-/* 浮动 */
-@keyframes float {
-  0%,100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-6px) scale(1.03); }
-}
-
-/* 呼吸光环 */
-@keyframes pulse {
-  0% { box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 12px 36px rgba(0,0,0,0.35); }
-  50% { box-shadow: 0 0 50px rgba(255,255,255,0.8), 0 12px 36px rgba(0,0,0,0.35); }
-  100% { box-shadow: 0 0 20px rgba(255,255,255,0.5), 0 12px 36px rgba(0,0,0,0.35); }
-}
-
-/* 水波涟漪 */
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.35);
-  transform: scale(0);
-  animation: rippleAnim 0.6s linear;
-  pointer-events: none;
-}
-
-@keyframes rippleAnim {
-  to { transform: scale(5); opacity: 0; }
-}
-
-/* 设置弹窗 */
-#settingsPanel {
-  position: fixed;
-  bottom: 110px;
-  right: 30px;
-  background: rgba(255,255,255,0.18);
-  border-radius: 25px;
-  padding: 20px;
-  display: none;
-  flex-direction: column;
-  align-items: stretch;
-  border: 2px solid rgba(255,255,255,0.35);
-  box-shadow: 0 12px 36px rgba(0,0,0,0.35), inset 0 4px 12px rgba(255,255,255,0.2);
-  backdrop-filter: blur(12px);
-  animation: fadeIn 0.3s ease forwards;
-}
-
-#settingsPanel button {
-  margin: 10px 0;
-  padding: 15px;
-  border-radius: 15px;
-  border: none;
-  background: rgba(255,255,255,0.25);
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.25s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  animation: pulse 3s infinite alternate;
-}
-
-#settingsPanel button:hover {
-  background: rgba(255,255,255,0.35);
-}
-
-@keyframes fadeIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-#bgInput { display: none; }
+/* 工具弹窗 */
+#toolModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);justify-content:center;align-items:center;z-index:2000;}
+#toolModal .content{position:relative;background:rgba(0,0,0,0.9);padding:20px;border-radius:20px;max-width:90%;max-height:80%;overflow:auto;}
+#closeToolModal{position:absolute;top:10px;right:15px;font-size:20px;color:#fff;background:none;border:none;cursor:pointer;}
+#toolContent img,#toolContent video{width:100%;margin:10px 0;border-radius:12px;}
 </style>
+</head>
 <body>
 
-<div class="glass">
-  <h1>📢 歪比巴卜</h1>
-  <p>本站资源纯网络收集(@yxj88nb)</p>
+<!-- Loader -->
+<div id="secure-loader">
+  <canvas id="bgParticles"></canvas>
+  <div class="hud">
+    <div class="ring">
+      <div class="logo">YXJ</div>
+      <div class="logo-glow"></div>
+    </div>
+    <div class="scan-beam"></div>
+    <div class="status">初始化安全环境...</div>
+  </div>
 </div>
 
-<div class="glass">
-  <h3>📁 资源目录(YXJNB)</h3>
-  <ul id="folderList">
-    <li data-url="https://www.123865.com/s/lod3vd-6QKqd">①-工具模块资源</li>
-    <li data-url="https://521o.cop357.com/ds/?key=1770796619">②神秘卡网</li>
-    <li data-url="https://www.123912.com/s/Iwbijv-2gDkh">🔞未满18岁禁止入内🔞</li>
-  </ul>
+<!-- 主站 -->
+<div id="mainContent">
+<header>
+  <h2>YXJ 神秘资金</h2>
+  <div>超级无敌牛逼</div>
+</header>
+
+<div class="section">
+  <div class="stack">
+    <div class="layer">
+      <h1>超级无敌牛逼</h1>
+      <p>无敌 · 牛逼 · 双端适配(PC,Android)</p>
+    </div>
+
+    <!-- 资源目录 -->
+    <div class="layer">
+      <h2>资源目录</h2>
+      <ul id="folderList">
+        <li data-url="https://www.123865.com/s/lod3vd-6QKqd">工具模块资源</li>
+        <li data-url="https://521o.cop357.com/ds/?key=1770796619">神秘卡网</li>
+        <li data-url="https://www.123912.com/s/Iwbijv-2gDkh">🔞 未满18禁止入内</li>
+      </ul>
+    </div>
+
+    <!-- 工具目录 -->
+    <div class="layer">
+      <h2>工具目录</h2>
+      <ul id="toolList">
+        <li data-api="https://api.lolimi.cn/API/xjjj/index">小视频</li>
+      </ul>
+    </div>
+
+  </div>
 </div>
 
 <div id="settingsBtn">⚙️</div>
 <div id="settingsPanel">
-  <button id="blurBtn">调整液态玻璃模糊</button>
-  <button id="chooseImageBtn">选择背景图片</button>
+  <button id="blurBtn">调整模糊</button>
+  <button id="chooseImageBtn">更换背景</button>
 </div>
-
 <input type="file" id="bgInput" accept="image/*">
 
+<!-- 工具弹窗 -->
+<div id="toolModal">
+  <div class="content">
+    <button id="closeToolModal">✖️</button>
+    <div id="toolContent"></div>
+  </div>
+</div>
+
+</div>
+
 <script>
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsPanel = document.getElementById('settingsPanel');
-const blurBtn = document.getElementById('blurBtn');
-const chooseImageBtn = document.getElementById('chooseImageBtn');
-const bgInput = document.getElementById('bgInput');
+// 粒子系统
+const canvas=document.getElementById("bgParticles");
+const ctx=canvas.getContext("2d");
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener("resize",resize);
+let particleCount=window.innerWidth<768?80:160;
+let particles=[];
+for(let i=0;i<particleCount;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speedX:(Math.random()-0.5)*0.6,speedY:(Math.random()-0.5)*0.6});}
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.speedX;p.y+=p.speedY;if(p.x<0||p.x>canvas.width)p.speedX*=-1;if(p.y<0||p.y>canvas.height)p.speedY*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle="rgba(0,200,255,0.8)";ctx.fill();});requestAnimationFrame(animate);}
+animate();
 
-// 设置按钮点击涟漪 + 弹出面板
-settingsBtn.addEventListener('click', (e) => {
-  const ripple = document.createElement('span');
-  ripple.className = 'ripple';
-  const rect = settingsBtn.getBoundingClientRect();
-  ripple.style.width = ripple.style.height = rect.width + 'px';
-  ripple.style.left = '0px';
-  ripple.style.top = '0px';
-  settingsBtn.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
-  settingsPanel.style.display = settingsPanel.style.display === 'flex' ? 'none' : 'flex';
-});
+// Loader 状态
+const status=document.querySelector(".status");
+const steps=["检测设备环境...","验证 GPU 加速...","分析网络稳定性...","加密会话通道...","安全验证通过"];
+let i=0;
+function nextStep(){if(i<steps.length){status.innerText=steps[i];i++;setTimeout(nextStep,1200);}else{document.getElementById("secure-loader").style.opacity="0";setTimeout(()=>{document.getElementById("secure-loader").remove();},1000);}}
+setTimeout(nextStep,1000);
 
-// 资源目录点击涟漪 + 跳转
-document.querySelectorAll('#folderList li').forEach(li => {
-  li.addEventListener('click', (e) => {
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    const rect = li.getBoundingClientRect();
-    ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
-    ripple.style.left = e.clientX - rect.left - rect.width/2 + 'px';
-    ripple.style.top = e.clientY - rect.top - rect.height/2 + 'px';
-    li.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
+// 光线跟随
+document.addEventListener("mousemove",e=>{document.documentElement.style.setProperty('--lightX',e.clientX+"px");document.documentElement.style.setProperty('--lightY',e.clientY+"px");});
 
-    const url = li.getAttribute('data-url');
-    if(url) window.open(url, '_blank');
+// 层渐显
+const layers=document.querySelectorAll(".layer");
+window.addEventListener("scroll",()=>{const trigger=window.innerHeight*0.85;layers.forEach(l=>{if(l.getBoundingClientRect().top<trigger)l.classList.add("active");});});
+
+// 涟漪点击
+function addRipple(listSelector, clickCallback){
+  document.querySelectorAll(listSelector).forEach(li=>{
+    li.addEventListener("click",e=>{
+      const ripple=document.createElement("span");
+      ripple.className="ripple";
+      const rect=li.getBoundingClientRect();
+      ripple.style.width=ripple.style.height=Math.max(rect.width,rect.height)+"px";
+      ripple.style.left=e.clientX-rect.left-rect.width/2+"px";
+      ripple.style.top=e.clientY-rect.top-rect.height/2+"px";
+      li.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),600);
+      if(clickCallback) clickCallback(li);
+    });
   });
-});
+}
 
-// 调节玻璃模糊
-blurBtn.addEventListener('click', () => {
-  const blurValue = prompt("请输入模糊程度 (0-20 px):", "12");
-  if(blurValue !== null){
-    document.querySelectorAll('.glass, #settingsPanel, #folderList li, #settingsPanel button').forEach(g => g.style.backdropFilter = `blur(${blurValue}px)`);
+// 资源目录点击
+addRipple("#folderList li", li=>{setTimeout(()=>window.open(li.dataset.url,"_blank"),300);});
+
+// 工具目录点击弹窗（解析 API JSON 并显示）
+addRipple("#toolList li", li=>{
+  const apiUrl=li.getAttribute("data-api");
+  if(apiUrl){
+    const modal=document.getElementById("toolModal");
+    const content=document.getElementById("toolContent");
+    content.innerHTML=`<p style="color:#0ff;text-align:center;">加载中...</p>`;
+    modal.style.display="flex";
+
+    // 直接请求 API
+    fetch(apiUrl)
+      .then(r=>r.json())
+      .then(res=>{
+        content.innerHTML="";
+        const list = res.data || res; // 根据返回结构调整
+        list.forEach(item=>{
+          if(item.url){ 
+            const img=document.createElement("img");
+            img.src=item.url;
+            img.alt="小视频(如果加载失败，说明接口被打了🤔)";
+            content.appendChild(img);
+          }
+        });
+      })
+      .catch(err=>{
+        console.error(err);
+        content.innerHTML=`<p style="color:red;text-align:center;">加载失败，等修复😂</p>`;
+      });
   }
 });
 
-// 选择背景图片
-chooseImageBtn.addEventListener('click', () => bgInput.click());
-bgInput.addEventListener('change', (e)=>{
-  const file = e.target.files[0];
-  if(file){
-    const url = URL.createObjectURL(file);
-    document.body.style.background = `url('${url}') center/cover no-repeat`;
-  }
-});
+// 关闭工具弹窗
+document.getElementById("closeToolModal").onclick=()=>{document.getElementById("toolModal").style.display="none";document.getElementById("toolContent").innerHTML="";};
+
+// 设置按钮
+const settingsBtn=document.getElementById("settingsBtn");
+const settingsPanel=document.getElementById("settingsPanel");
+settingsBtn.onclick=()=>settingsPanel.style.display=settingsPanel.style.display==="flex"?"none":"flex";
+document.getElementById("blurBtn").onclick=()=>{const v=prompt("输入模糊值 0-40","20");if(v)document.documentElement.style.setProperty("--blur",v+"px");};
+const bgInput=document.getElementById("bgInput");
+document.getElementById("chooseImageBtn").onclick=()=>bgInput.click();
+bgInput.onchange=e=>{const file=e.target.files[0];if(file){const url=URL.createObjectURL(file);document.body.style.background=`url('${url}') center/cover no-repeat`;}};  
 </script>
 </body>
 </html>
